@@ -1,32 +1,36 @@
 import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import UserContext from '../../contexts/UserContext';
 import { postLoginForm } from '../../services/HttpService';
 import ErrorBox from '../alerts/ErrorBox';
-import InfoBox from '../alerts/InfoBox';
-import SuccessBox from '../alerts/SuccessBox';
 import FormSection from './utils/FormSection';
 
 
 
 export default function Login(props) {
     const [user, setUserData] = useContext(UserContext)
-    const [error, setError] = useState('')
+    const [formState, setFormState] = useState({
+        success: false,
+        isLoading: false,
+        error: '',
+        data: null
+    })
     const { register, handleSubmit, formState: { errors }, reset } = useForm({mode: 'onChange'})
     
-    const clearError = () => { setError('') }
-
     const onSuccess = data => {
-        setUserData({ data, token: 'x', postLogin: true })
+        // setFormState({success: true, isLoading: false, error: ''})
+        setUserData({ ...data, postLogin: true })
+
     }
     const onError = e => {
         // setFormSuccess(false)
-        setError(e.message)
+        setFormState({success: false, isLoading: false, error: e.message})
+        // setError(e.message)
     }
 
     const onSubmit = userData => {
-        clearError()
+        setFormState({ success: false, error: '', isLoading: true})
         postLoginForm(userData)
             .then(onSuccess)
             .catch(onError)
@@ -38,8 +42,8 @@ export default function Login(props) {
 
     return (
         <div className="m-auto" style={customStyle}>
-            {error && <ErrorBox>{error}</ErrorBox>}
-            {!error && props.location.state?.postRegister ? <SuccessBox><div>Registered successfully !</div><div>Please Login to continue</div></SuccessBox> : ''}
+            {formState.error && <ErrorBox>{formState.error}</ErrorBox>}
+            {/* {!error && props.location.state?.postRegister ? <SuccessBox><div>Registered successfully !</div><div>Please Login to continue</div></SuccessBox> : ''} */}
             <FormSection heading="Login" className="my-4" linkEmbed={linkRegister}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="form-group">
@@ -52,13 +56,9 @@ export default function Login(props) {
                         <input type="password" className={errors?.password ? 'form-control is-invalid' : 'form-control'} id="password" {...register('password', { required: 'Passsword is required' })} placeholder="Password" />
                         <small className="invalid-feedback">{errors?.password?.message}</small>
                     </div>
-                    <button type="submit" className="btn btn-primary">Register</button>
+                    <button type="submit" className="btn btn-primary" disabled={formState.isLoading}>{formState.isLoading ? 'Loading...' : 'Login'}</button>
                 </form>
             </FormSection>
-            <InfoBox>
-                <div>Username: admin</div>
-                <div>Password:   123</div>
-            </InfoBox>
         </div>
     )
 }

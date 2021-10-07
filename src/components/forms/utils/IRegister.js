@@ -21,23 +21,29 @@ function scrollTop(){
     });
 }
 
+const initFormState = {
+    success: false,
+    isLoading: false,
+    error: '',
+}
+
+
 export default function IRegister({ formType, userData, onSubmit, linkEmbed }) {
-
-    const [countryStates, setStates] = useState({ disabled: true, states: [] })
+    
+    const [countryStates, setStates] = useState({ 
+        disabled: !userData, 
+        states: userData?.country ? State.getStatesOfCountry(userData.country) : []
+    })
     const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: userData, mode: 'onChange'});
-    const [error, setError] = useState()
-    const [formSuccess, setFormSuccess] = useState(false)
-
+    const [formState, setFormState] = useState(initFormState)
     const onSuccess = data => {
-        console.log(data)
-        setError('')
-        setFormSuccess(true)
+        formType?.loadSuccessMessage(data)
+        setFormState({isLoading: false, success: true, error: ''})
         if(!formType.redirect)
             scrollTop()
     }
     const onError = e => {
-        setFormSuccess(false)
-        setError(e.message)
+        setFormState({error: e.message, success: false, isLoading: false})
         scrollTop()
     }
 
@@ -47,17 +53,21 @@ export default function IRegister({ formType, userData, onSubmit, linkEmbed }) {
 
     const countryRegister = register('country', { required: 'Country is required', validate: value => value !== 'choose' || 'Country is required' })
     
-    if(formSuccess && formType.redirect)
-        return formType.redirect
+    // if(formState.success && formType.redirect){
+    //     return formType.redirect
+    // }
+    if(formState.success)
+        formType.loadSuccessMessage()
 
     return (
         <div>
             <h1 className="h1 text-center">{formType.name}</h1>
             <form onSubmit={handleSubmit((data) => {
+                setFormState(prev => {return {...prev, isLoading: true}})
                 onSubmit(data, onSuccess, onError)
             })}>
-                {error && <ErrorBox>{error}</ErrorBox>}
-                { formSuccess ? <SuccessBox>{formType.successMessage}</SuccessBox> : ''}
+                { formState.error && <ErrorBox>{formState.error}</ErrorBox> }
+                { formState.success ? <SuccessBox>{formType.successMessage}</SuccessBox> : ''}
 
                 <FormSection heading="User Details" className="my-4" linkEmbed={linkEmbed}>
                     <div className="form-row">
@@ -110,9 +120,9 @@ export default function IRegister({ formType, userData, onSubmit, linkEmbed }) {
                     </div>
                     <div className="form-row">
                         <div className="form-group col-sm-6">
-                            <label htmlFor="identityDocType">Identity Document Type</label>
-                            <input type="text" className={errors?.identityDocType ? 'form-control is-invalid' : 'form-control'} id="identityDocType"  {...register('identityDocType', { required: 'Identity document type is required' })} placeholder="Document Type" />
-                            <small className="invalid-feedback">{errors?.identityDocType?.message}</small>
+                            <label htmlFor="identityDocName">Identity Document Type</label>
+                            <input type="text" className={errors?.identityDocName ? 'form-control is-invalid' : 'form-control'} id="identityDocName"  {...register('identityDocName', { required: 'Identity document type is required' })} placeholder="Document Type" />
+                            <small className="invalid-feedback">{errors?.identityDocName?.message}</small>
                         </div>
                         <div className="form-group col-sm-6">
                             <label htmlFor="identityDocNumber">Identity Document Number</label>
@@ -225,9 +235,7 @@ export default function IRegister({ formType, userData, onSubmit, linkEmbed }) {
                         </div>
                     </div>
                 </FormSection>
-
-                <button type="submit" className="btn btn-primary">Submit</button>
-                <button type="button" className="btn btn-danger ml-3" title="Submit Always Fails" onClick={() => {onSubmit({failFlag: true}, onSuccess, onError)}}>Submit (Fail)</button>
+                <button type="submit" className="btn btn-primary" disabled={formState.isLoading}>{formState.isLoading ? 'Loading...' : 'Submit'}</button>
             </form>
         </div>
 

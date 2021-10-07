@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import Register from './components/forms/Register'
@@ -31,14 +30,16 @@ export default function App() {
   const [user, setUser] = useState(getSessionData());
   
   const setUserData = userData => {
+    console.log(userData)
     setUser(userData)
     setSessionData(userData)
   }
+  
   const logout = () => {
     sessionStorage.clear()
     setUser(initialState)
   }
-
+  // user?.callback()
   return (
     <UserContext.Provider value={[user, setUserData, logout]}>
       <Layout>

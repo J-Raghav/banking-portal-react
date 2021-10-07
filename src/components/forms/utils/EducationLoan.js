@@ -4,11 +4,11 @@ import FormSection from './FormSection'
 export default function EducationLoan(props) {
     const { register, errors } = props
     return (
-        <FormSection heading="Education Loan Details" className="my-4"> 
+        <FormSection heading="Education Loan Details" className="my-4">
             <div className="form-row">
                 <div className="form-group col-6 col-sm-3">
                     <label htmlFor="courseFee">Course Fee</label>
-                    <input type="number" className={errors?.courseFee ? 'form-control is-invalid' : 'form-control'} id="courseFee" {...register('courseFee', { required: 'Course Fee is required' })} placeholder="Course Fee" />
+                    <input type="number" className={errors?.courseFee ? 'form-control is-invalid' : 'form-control'} id="courseFee" {...register('courseFee', { valueAsNumber: true, required: 'Course Fee is required' })} placeholder="Course Fee" />
                     <small className="invalid-feedback">{errors.courseFee?.message}</small>
                 </div>
                 <div className="form-group col-6 col-sm-3">
@@ -18,7 +18,7 @@ export default function EducationLoan(props) {
                 </div>
                 <div className="form-group col-6 col-sm-3">
                     <label htmlFor="annualIncome">Annual Income</label>
-                    <input type="number" className={errors?.annualIncome ? 'form-control is-invalid' : 'form-control'} id="annualIncome" {...register('annualIncome', { required: 'Annual Income is required' })} placeholder="Annual Income" />
+                    <input type="number" className={errors?.annualIncome ? 'form-control is-invalid' : 'form-control'} id="annualIncome" {...register('annualIncome', { valueAsNumber: true, required: 'Annual Income is required' })} placeholder="Annual Income" />
                     <small className="invalid-feedback">{errors.annualIncome?.message}</small>
                 </div>
                 <div className="form-group col-6 col-sm-3">
@@ -28,20 +28,28 @@ export default function EducationLoan(props) {
                 </div>
             </div>
             <div className="form-row">
-                <div className="form-group col-6 col-sm-4">
-                    <label htmlFor="fatherOcc">Father's Occupation</label>
-                    <input type="text" className={errors?.fatherOcc ? 'form-control is-invalid' : 'form-control'} id="fatherOcc" {...register('fatherOcc', { required: 'Occupation is required' })} placeholder="Father's Occupation" />
-                    <small className="invalid-feedback">{errors.fatherOcc?.message}</small>
+                <div className="form-group col-sm-6">
+                    <label htmlFor="fatherName">Father's Name</label>
+                    <input type="text" className={errors?.fatherName ? 'form-control is-invalid' : 'form-control'} id="fatherName" {...register('fatherName', { required: 'Father\'s Name is required' })} placeholder="Father's Name" />
+                    <small className="invalid-feedback">{errors.fatherName?.message}</small>
                 </div>
-                <div className="form-group col-6 col-sm-4">
-                    <label htmlFor="fatherExp">Father's Experience</label>
-                    <input type="number" className={errors?.fatherExp ? 'form-control is-invalid' : 'form-control'} id="fatherExp" {...register('fatherExp', { required: 'Experience is required' })} placeholder="Father's Experience" />
-                    <small className="invalid-feedback">{errors.fatherExp?.message}</small>
+                <div className="form-group col-sm-6">
+                    <label htmlFor="fatherOccupation">Father's Occupation</label>
+                    <input type="text" className={errors?.fatherOccupation ? 'form-control is-invalid' : 'form-control'} id="fatherOccupation" {...register('fatherOccupation', { required: 'Occupation is required' })} placeholder="Father's Occupation" />
+                    <small className="invalid-feedback">{errors.fatherOccupation?.message}</small>
                 </div>
-                <div className="form-group col-sm-4">
-                    <label htmlFor="fatherExpCur">Father's Current Experience</label>
-                    <input type="number" className={errors?.fatherExpCur ? 'form-control is-invalid' : 'form-control'} id="fatherExpCur" {...register('fatherExpCur', { required: 'Experience is required' })} placeholder="Current company Father's Experience" />
-                    <small className="invalid-feedback">{errors.fatherExpCur?.message}</small>
+            </div>
+            <div className="form-row">
+
+                <div className="form-group col-sm-6">
+                    <label htmlFor="fatherTotalExp">Father's Experience</label>
+                    <input type="number" className={errors?.fatherTotalExp ? 'form-control is-invalid' : 'form-control'} id="fatherTotalExp" {...register('fatherTotalExp', { valueAsNumber: true, required: 'Experience is required' })} placeholder="Father's Experience" />
+                    <small className="invalid-feedback">{errors.fatherTotalExp?.message}</small>
+                </div>
+                <div className="form-group col-sm-6">
+                    <label htmlFor="fatherCurrentCompanyExp">Father's Current Experience</label>
+                    <input type="number" className={errors?.fatherCurrentCompanyExp ? 'form-control is-invalid' : 'form-control'} id="fatherCurrentCompanyExp" {...register('fatherCurrentCompanyExp', { valueAsNumber: true, required: 'Experience is required' })} placeholder="Current company Father's Experience" />
+                    <small className="invalid-feedback">{errors.fatherCurrentCompanyExp?.message}</small>
                 </div>
             </div>
         </FormSection>

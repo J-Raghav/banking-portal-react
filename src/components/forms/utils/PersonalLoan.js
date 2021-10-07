@@ -19,20 +19,20 @@ export default function PersonalLoan(props) {
                 </div>
                 <div className="form-group col-sm-4">
                     <label htmlFor="annualIncome">Annual Income</label>
-                    <input type="number" className={errors?.annualIncome ? 'form-control is-invalid' : 'form-control'} id="annualIncome" {...register('annualIncome', { required: 'Annual Income is required' })} placeholder="Annual Income" />
+                    <input type="number" className={errors?.annualIncome ? 'form-control is-invalid' : 'form-control'} id="annualIncome" {...register('annualIncome', {  valueAsNumber: true, required: 'Annual Income is required' })} placeholder="Annual Income" />
                     <small className="invalid-feedback">{errors.annualIncome?.message}</small>
                 </div>
             </div>
             <div className="form-row">
                 <div className="form-group col-6">
-                    <label htmlFor="exp">Total Experience</label>
-                    <input type="number" className={errors?.exp ? 'form-control is-invalid' : 'form-control'} id="fatherExp" {...register('exp', { required: 'Experience is required' })} placeholder="Total Experience" />
-                    <small className="invalid-feedback">{errors.exp?.message}</small>
+                    <label htmlFor="totalExp">Total Experience</label>
+                    <input type="number" className={errors?.totalExp ? 'form-control is-invalid' : 'form-control'} id="fatherTotalExp" {...register('totalExp', {  valueAsNumber: true, required: 'Experience is required' })} placeholder="Total Experience" />
+                    <small className="invalid-feedback">{errors.totalExp?.message}</small>
                 </div>
                 <div className="form-group col-6">
-                    <label htmlFor="expCur">Current Experience</label>
-                    <input type="number" className={errors?.expCur ? 'form-control is-invalid' : 'form-control'} id="expCur" {...register('expCur', { required: 'Current Experience is required' })} placeholder="Current company Experience" />
-                    <small className="invalid-feedback">{errors.expCur?.message}</small>
+                    <label htmlFor="currentCompanyExp">Current Company Experience</label>
+                    <input type="number" className={errors?.currentCompanyExp ? 'form-control is-invalid' : 'form-control'} id="currentCompanyExp" {...register('currentCompanyExp', {  valueAsNumber: true, required: 'Current Experience is required' })} placeholder="Current company Experience" />
+                    <small className="invalid-feedback">{errors.currentCompanyExp?.message}</small>
                 </div>
             </div>
         </FormSection>
